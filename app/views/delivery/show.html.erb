@@ -1,0 +1,116 @@
+<div>
+  <div>
+    <h1>
+      Delivery #<%= @the_delivery.id %> details
+    </h1>
+
+    <div>
+      <div>
+        <a href="/deliveries">
+          Go back
+        </a>
+      </div>
+
+      <div>
+        <a href="/delete_delivery/<%= @the_delivery.id %>">
+          Delete delivery
+        </a>
+      </div>
+    </div>
+
+    <dl>
+      <dt>
+        Arrive on
+      </dt>
+      <dd>
+        <%= @the_delivery.arrive_on %>
+      </dd>
+
+      <dt>
+        Description
+      </dt>
+      <dd>
+        <%= @the_delivery.description %>
+      </dd>
+
+      <dt>
+        Details
+      </dt>
+      <dd>
+        <%= @the_delivery.details %>
+      </dd>
+
+      <dt>
+        Status
+      </dt>
+      <dd>
+        <%= @the_delivery.status %>
+      </dd>
+
+      <dt>
+        Created at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_delivery.created_at) %> ago
+      </dd>
+
+      <dt>
+        Updated at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@the_delivery.updated_at) %> ago
+      </dd>
+    </dl>
+  </div>
+</div>
+
+<hr>
+
+
+<div>
+  <div>
+    <h2>
+      Edit delivery
+    </h2>
+
+    <form action="/modify_delivery/<%= @the_delivery.id %>"  method="post" >
+      <div>
+        <label for="arrive_on_box">
+          Arrive on
+        </label>
+
+        <input type="date" id="arrive_on_box" name="query_arrive_on" value="<%= @the_delivery.arrive_on %>">
+      </div>
+
+      <div>
+        <label for="description_box">
+          Description
+        </label>
+
+        <input type="text" id="description_box" name="query_description" value="<%= @the_delivery.description %>">
+      </div>
+
+      <div>
+        <label for="details_box">
+          Details
+        </label>
+
+        <input type="text" id="details_box" name="query_details" value="<%= @the_delivery.details %>">
+      </div>
+
+      <div>
+        <label for="status_box">
+          Status
+        </label>
+
+        <input type="text" id="status_box" name="query_status" value="<%= @the_delivery.status %>">
+      </div>
+
+      <button>
+        Update delivery
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>
