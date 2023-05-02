@@ -1,34 +1,28 @@
-<div>
-  <div>
     <h1>
-      List of all deliveries
+      Delivery Tracker
     </h1>
-  </div>
-</div>
 
-<hr>
+    <p>Know if something gets lost in the mail.</p>
 
-<div>
-  <div>
     <h2>
-      Add a new delivery
+      Expecting a package?
     </h2>
 
     <form action="/insert_delivery" method="post">
-      <div>
-        <label for="arrive_on_box">
-          Arrive on
-        </label>
-
-        <input type="date" id="arrive_on_box" name="query_arrive_on">
-      </div>
-
       <div>
         <label for="description_box">
           Description
         </label>
 
-        <input type="text" id="description_box" name="query_description">
+        <input type="text" id="description_box" name="description">
+      </div>
+
+      <div>
+        <label for="supposed_to_arrive_on_box">
+          Supposed to arrive on
+        </label>
+
+        <input type="date" id="supposed_to_arrive_on_box" name="arrive_on">
       </div>
 
       <div>
@@ -36,99 +30,50 @@
           Details
         </label>
 
-        <input type="text" id="details_box" name="query_details">
+        <textarea id="details_box" name="details" rows="3"></textarea>
       </div>
-
-      <div>
-        <label for="status_box">
-          Status
-        </label>
-
-        <input type="text" id="status_box" name="query_status">
-      </div>
-
+      <input type="hidden" name="query_status" value="waiting_on">
       <button>
-        Create delivery
+        Log delivery
       </button>
     </form>
-  </div>
+
+
+<div class="waiting_on" style="background-color:lightgoldenrodyellow">
+  <h2>Waiting on</h2>
+ <ul>
+ <%@list_of_deliveries.each do |delivery|%>
+ <%if delivery.status == "waiting_on"%>
+ <li><div><%=delivery.description%></div>
+  <%expected_date = delivery.arrive_on%>
+  <%#days_until = (expected_date - Date.today).to_i%>
+ <%if expected_date < 3.days.ago%>
+ <div style="color:red">Supposed to arrive on <%=delivery.arrive_on.to_s%></div>
+ <%else%>
+ <div style="color:black">Supposed to arrive on <%=delivery.arrive_on.to_s%></div>
+  <%end%>
+ <%if delivery.details != nil%>
+<div><%=delivery.details%></div>
+ <%end%>
+ <form action="/modify_delivery/<%=delivery.id%>" method="post">
+          <input type="hidden" name="query_status" value="received">
+          <button>Mark as received</button>
+        </form>
+ </li>
+ <%end%>
+ <%end%>
+ </ul>
 </div>
 
-<hr>
-<div>
-  <div>
-    <table border="1">
-      <tr>
-        <th>
-          ID
-        </th>
-
-        <th>
-          Arrive on
-        </th>
-
-        <th>
-          Description
-        </th>
-
-        <th>
-          Details
-        </th>
-
-        <th>
-          Status
-        </th>
-
-        <th>
-          Created at
-        </th>
-
-        <th>
-          Updated at
-        </th>
-
-        <th>
-        </th>
-      </tr>
-
-      <% @list_of_deliveries.each do |a_delivery| %>
-      <tr>
-        <td>
-          <%= a_delivery.id %>
-        </td>
-
-        <td>
-          <%= a_delivery.arrive_on %>
-        </td>
-
-        <td>
-          <%= a_delivery.description %>
-        </td>
-
-        <td>
-          <%= a_delivery.details %>
-        </td>
-
-        <td>
-          <%= a_delivery.status %>
-        </td>
-
-        <td>
-          <%= time_ago_in_words(a_delivery.created_at) %> ago
-        </td>
-        <td>
-          <%= time_ago_in_words(a_delivery.updated_at) %> ago
-        </td>
-
-        <td>
-          <a href="/deliveries/<%= a_delivery.id %>">
-            Show details
-          </a>
-        </td>
-      </tr>
-      <% end %>
-    </table>
-  </div>
+<div class="received" style="background-color:lightgreen">
+  <h2>Received</h2>
+  <ul>
+ <%@list_of_deliveries.each do |delivery|%>
+  <%if delivery.status == "received"%>
+ <li><div><%=delivery.description%></div>
+ <small>Updated <%=time_ago_in_words(delivery.updated_at)%> ago <a href="/delete_delivery/<%=delivery.id%>">Delete</a></small>
+ </li>
+ <%end%>
+  <%end%>
+ </ul>
 </div>
-
-<hr>

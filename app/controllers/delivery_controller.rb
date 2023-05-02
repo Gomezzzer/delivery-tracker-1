@@ -10,7 +10,7 @@ class DeliveryController < ApplicationController
     new_delivery.arrive_on = params.fetch("arrive_on")
     new_delivery.details = params.fetch("details")
     new_delivery.status = params.fetch("query_status")
-    new_delivery.user_id = session.fetch(:user_id)
+  #  new_delivery.user_id = session.fetch(:user_id)
     new_delivery.save
     redirect_to("/", {:notice=>"Added to list"})
   end
